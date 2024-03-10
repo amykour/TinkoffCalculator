@@ -11,7 +11,6 @@ enum CalculationError: Error {
     case dividedByZero
 }
 
-// Possible operations
 enum Operation: String {
     case add = "+"
     case substract = "-"
@@ -38,7 +37,6 @@ enum Operation: String {
     }
 }
 
-// Enum for storing numbers and operations in the same array
 enum CalculationHistoryItem {
     case number(Double)
     case operation(Operation)
@@ -50,9 +48,13 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
         resetLabelText()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     lazy var numberFormatter: NumberFormatter = {
@@ -122,6 +124,19 @@ class ViewController: UIViewController {
         }
         
         calculationHistory.removeAll()
+    }
+    
+    
+    @IBAction func showCalculationsList(_ sender: Any) {
+        
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let calculationsListVC = sb.instantiateViewController(identifier: "CalculationsListViewController")
+        if let vc = calculationsListVC as? CalculationsListViewController {
+            vc.result = label.text
+        }
+        
+        navigationController?.pushViewController(calculationsListVC, animated: true )
+        
     }
     
     func calculate() throws -> Double {
